@@ -15,7 +15,6 @@ export default function SizePredictor({ onClose }) {
         stream = await navigator.mediaDevices.getUserMedia({ video: true });
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
-          // Chờ video metadata load xong rồi mới play
           videoRef.current.onloadedmetadata = () => {
             videoRef.current.play().catch((error) => {
               if (error.name !== "AbortError") {
@@ -40,28 +39,28 @@ export default function SizePredictor({ onClose }) {
   }, []);
 
   const handlePredict = async () => {
-  setLoading(true);
-  const canvas = canvasRef.current;
-  const context = canvas.getContext("2d");
+    setLoading(true);
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
 
-  const video = videoRef.current;
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const video = videoRef.current;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-  const imageBlob = await new Promise((resolve) =>
-    canvas.toBlob(resolve, "image/jpeg")
-  );
+    const imageBlob = await new Promise((resolve) =>
+      canvas.toBlob(resolve, "image/jpeg")
+    );
 
-  try {
-    const data = await predictSizeFromImage(imageBlob);
-    setResult(data.data || "Không rõ");
-  } catch (err) {
-    setResult("Lỗi dự đoán");
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      const data = await predictSizeFromImage(imageBlob);
+      setResult(data.data || "Không rõ");
+    } catch (err) {
+      setResult("Lỗi dự đoán");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="w-full h-full  flex flex-col items-center justify-center gap-4 ">
@@ -80,21 +79,13 @@ export default function SizePredictor({ onClose }) {
           muted
         />
 
-        {/* Viền bầu dục */}
-
         {/* Overlay mask tối ngoài vùng ellipse */}
         <div className="absolute inset-0 z-10 pointer-events-none">
           <svg width="100%" height="100%">
             <defs>
               <mask id="mask-ellipse">
                 <rect width="100%" height="100%" fill="white" />
-                <ellipse
-                  cx="50%"
-                  cy="50%"
-                  rx="25%" // = w/2 của div viền (40% width => rx=20%)
-                  ry="50%" // = height/2 = 40% * 5/4 / 2 = 25%
-                  fill="black"
-                />
+                <ellipse cx="50%" cy="50%" rx="25%" ry="50%" fill="black" />
               </mask>
             </defs>
             <rect
@@ -123,7 +114,11 @@ export default function SizePredictor({ onClose }) {
       {result && (
         <div className="text-xl font-semibold text-green-700 flex flex-col items-center ">
           <div>Kết quả dự đoán</div>
-          <div>Kích cỡ mặt: {result.face_width_mm} Size kính: {result.predicted_size}</div>
+          <div>
+            Kích cỡ mặt: {result.face_width_mm ? result.face_width_mm : result}
+            {"-"}
+            Size kính: {result.predicted_size ? result.predicted_size : result}
+          </div>
         </div>
       )}
     </div>

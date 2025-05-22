@@ -88,7 +88,7 @@ export default function Filter({ onFilterChange }) {
 
         <button
           type="submit"
-          className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="mt-2 px-4 py-2 bg-[#7DA0CA] text-white rounded hover:bg-blue-700"
         >
           Áp dụng
         </button>
