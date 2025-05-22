@@ -6,8 +6,8 @@ export default function Filter({ onFilterChange }) {
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
 
-  const colors = ["Black", "Brown", "Green", "Blue"];
-  const sizes = ["S", "M", "L", "XL"];
+  const colors = ["Black", "Brown", "Green", "Blue", "White"];
+  const sizes = ["XXS", "XS", "S", "M", "L", "XL"];
 
   const handleCheckboxChange = (value, list, setList) => {
     setList((prev) =>

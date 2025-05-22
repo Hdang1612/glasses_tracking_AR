@@ -2,59 +2,35 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ZapparFaceTracking from "../components/ZapparARFace";
-
+import ModelViewer from "../components/ModelView";
+import SizePredictor from "../components/Predict";
+import { fetchProductById } from "../service/service";
 export default function ProductDetail() {
   const { id } = useParams();
+  const [showARModal, setShowARModal] = useState(false);
+  const [show3DModal, setShow3DModal] = useState(false);
+  const [showPredictModal, setShowPredictModal] = useState(false);
+  
 
-  const fake = {
-    message: "Product with id",
-    httpCode: 200,
-    data: {
-      id: "1",
-      name: "Kính cận",
-      imageCover: "/public/glasses/1.png",
-      price: 500000,
-      description: "Kính gọng nhựa cao cấp, nhẹ và bền.",
-      brandName: "Anna",
-      attributes: [
-        {
-          name: "height",
-          value: "12",
-        },
-      ],
-      sizes: ["M", "L"],
-      colors: [
-        {
-          label: "Green",
-          arModelUrls: ["/glasses/sunglasses.glb"],
-          imageUrls: ["/glasses/1.png"],
-        },
-        {
-          label: "Black",
-          arModelUrls: ["/glasses/sunglasses.glb"],
-          imageUrls: ["/glasses/1.png"],
-        },
-      ],
-    },
-    metaData: null,
-  };
-
-  const [product, setProduct] = useState(fake.data);
+  const [product, setProduct] = useState();
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
 
-  // Bạn có thể dùng API thật ở đây
-  // useEffect(() => {
-  //   fetch(`http://localhost:8080/api/products/${id}`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setProduct(data.data);
-  //       setSelectedColorIndex(0);
-  //     });
-  // }, [id]);
+  useEffect(() => {
+  fetchProductById(id)
+    .then((productData) => {
+      setProduct(productData);
+      setSelectedColorIndex(0);
+    })
+    .catch((error) => {
+      // Xử lý lỗi nếu cần
+      setProduct(null);
+    });
+}, [id]);
 
   if (!product) return <p className="p-4">Loading...</p>;
 
   const selectedColor = product.colors[selectedColorIndex];
+  const imgCover = product.imageCover;
 
   return (
     <div className="flex flex-col md:flex-row p-4 gap-4">
@@ -63,7 +39,8 @@ export default function ProductDetail() {
         style={{ height: "600px" }}
       >
         {/* Component Zappar AR Face Tracking */}
-        <ZapparFaceTracking modelUrl={selectedColor.arModelUrls[0]} />
+        {/* <ZapparFaceTracking modelUrl={selectedColor.arModelUrls[0]} /> */}
+        <img src={imgCover} alt="" className="object-contain max-h-full" />
       </div>
 
       <div className="flex-1 bg-white rounded-2xl shadow p-4 text-[#7DA0CA]">
@@ -112,7 +89,64 @@ export default function ProductDetail() {
               </div>
             ))}
           </div>
+          {/* Buttons */}
+          <div className="mt-6 flex gap-4">
+            <button
+              onClick={() => setShowARModal(true)}
+              className="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600"
+            >
+              Mở camera thử kính
+            </button>
+            <button
+              onClick={() => setShow3DModal(true)}
+              className="bg-gray-700 text-white px-4 py-2 rounded-xl hover:bg-gray-800"
+            >
+              Xem kính 3D
+            </button>
+            <button
+              onClick={() => setShowPredictModal(true)}
+              className="bg-gray-700 text-white px-4 py-2 rounded-xl hover:bg-gray-800"
+            >
+              Dự đoán kích thước
+            </button>
+          </div>
         </div>
+        {/* MODAL for AR */}
+        {showARModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
+            <div className="bg-white p-4 rounded-xl w-[60%] h-[80%] relative">
+              <button
+                onClick={() => setShowARModal(false)}
+                className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded"
+              >
+                Đóng
+              </button>
+              <ZapparFaceTracking modelUrl={selectedColor.arModelUrls[0]} />
+            </div>
+          </div>
+        )}
+
+        {/* MODAL for 3D */}
+        {show3DModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
+            <div className="bg-white p-4 rounded-xl w-[60%] h-[80%] relative">
+              <button
+                onClick={() => setShow3DModal(false)}
+                className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded"
+              >
+                Đóng
+              </button>
+              <ModelViewer modelUrl={selectedColor.arModelUrls[0]} />
+            </div>
+          </div>
+        )}
+        {showPredictModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
+            <div className="bg-white p-4 rounded-xl w-[60%] h-[100%] ">
+              <SizePredictor onClose={() => setShowPredictModal(false)} />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

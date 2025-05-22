@@ -2,10 +2,9 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 import * as ZapparThree from "@zappar/zappar-threejs";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-
 export default function ZapparFaceTracking({ modelUrl }) {
   const canvasRef = useRef();
-
+  
   useEffect(() => {
     const canvas = canvasRef.current;
     // Lấy kích thước phần tử cha của canvas
