@@ -11,52 +11,52 @@ export default function ProductDetail() {
   const [show3DModal, setShow3DModal] = useState(false);
   const [showPredictModal, setShowPredictModal] = useState(false);
 
-  // const fake = {
-  //   message: "Product with id",
-  //   httpCode: 200,
-  //   data: {
-  //     id: "1",
-  //     name: "Kính cận",
-  //     imageCover: "/public/glasses/1.png",
-  //     price: 500000,
-  //     description: "Kính gọng nhựa cao cấp, nhẹ và bền.",
-  //     brandName: "Anna",
-  //     attributes: [
-  //       {
-  //         name: "height",
-  //         value: "12",
-  //       },
-  //     ],
-  //     sizes: ["M", "L"],
-  //     colors: [
-  //       {
-  //         label: "Green",
-  //         arModelUrls: ["/glasses/sunglasses.glb"],
-  //         imageUrls: ["/glasses/1.png"],
-  //       },
-  //       {
-  //         label: "Black",
-  //         arModelUrls: ["/glasses/sunglasses.glb"],
-  //         imageUrls: ["/glasses/2.png"],
-  //       },
-  //     ],
-  //   },
-  //   metaData: null,
-  // };
-  const [product, setProduct] = useState();
+  const fake = {
+    message: "Product with id",
+    httpCode: 200,
+    data: {
+      id: "1",
+      name: "Kính cận",
+      imageCover: "/public/glasses/1.png",
+      price: 500000,
+      description: "Kính gọng nhựa cao cấp, nhẹ và bền.",
+      brandName: "Anna",
+      attributes: [
+        {
+          name: "height",
+          value: "12",
+        },
+      ],
+      sizes: ["M", "L"],
+      colors: [
+        {
+          label: "Green",
+          arModelUrls: ["/glasses/sunglasses.glb"],
+          imageUrls: ["/glasses/1.png"],
+        },
+        {
+          label: "Black",
+          arModelUrls: ["/glasses/sunglasses.glb"],
+          imageUrls: ["/glasses/2.png"],
+        },
+      ],
+    },
+    metaData: null,
+  };
+  const [product, setProduct] = useState(fake.data);
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
 
-  useEffect(() => {
-    fetchProductById(id)
-      .then((productData) => {
-        setProduct(productData);
-        setSelectedColorIndex(0);
-      })
-      .catch((error) => {
-        // Xử lý lỗi nếu cần
-        setProduct(null);
-      });
-  }, [id]);
+  // useEffect(() => {
+  //   fetchProductById(id)
+  //     .then((productData) => {
+  //       setProduct(productData);
+  //       setSelectedColorIndex(0);
+  //     })
+  //     .catch((error) => {
+  //       // Xử lý lỗi nếu cần
+  //       setProduct(null);
+  //     });
+  // }, [id]);
 
   if (!product) return <p className="p-4">Loading...</p>;
 
@@ -74,7 +74,7 @@ export default function ProductDetail() {
         <img
           src={displayedImage}
           alt=""
-          className="object-contain max-h-full"
+          className="w-full h-full object-cover"
         />
       </div>
 

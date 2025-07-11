@@ -11,7 +11,7 @@ export default function ModelViewer({ modelUrl }) {
 
     // Scene & background
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color("#f0f4ff"); // Màu nền xanh nhạt
+    scene.background = new THREE.Color("#f0f4ff"); 
 
     // Camera
     const camera = new THREE.PerspectiveCamera(

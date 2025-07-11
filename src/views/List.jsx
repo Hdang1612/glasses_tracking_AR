@@ -4,74 +4,74 @@ import { useNavigate } from "react-router-dom";
 import Filter from "../components/Filter";
 import { fetchProducts } from "../service/service";
 export default function ProductList() {
-  // const fake = {
-  //   message: "Danh sách product",
-  //   httpCode: 200,
-  //   data: [
-  //     {
-  //       id: "1",
-  //       name: "Kính cận",
-  //       imageCover: "/glasses/1.png",
-  //       price: 500000,
-  //       description: "Kính gọng nhựa cao cấp, nhẹ và bền.",
-  //       brandName: "Anna",
-  //     },
-  //     {
-  //       id: "2",
-  //       name: "Kính thời trang",
-  //       imageCover: "/glasses/2.png",
-  //       price: 750000,
-  //       description: "Phong cách hiện đại, phù hợp cả nam và nữ.",
-  //       brandName: "Zoro",
-  //     },
-  //     {
-  //       id: "3",
-  //       name: "Kính thời trang",
-  //       imageCover: "/glasses/2.png",
-  //       price: 750000,
-  //       description: "Phong cách hiện đại, phù hợp cả nam và nữ.",
-  //       brandName: "Zoro",
-  //     },
-  //     {
-  //       id: "4",
-  //       name: "Kính thời trang",
-  //       imageCover: "/glasses/1.png",
-  //       price: 750000,
-  //       description: "Phong cách hiện đại, phù hợp cả nam và nữ.",
-  //       brandName: "Zoro",
-  //     },
-  //     {
-  //       id: "4",
-  //       name: "Kính thời trang",
-  //       imageCover: "/glasses/2.png",
-  //       price: 750000,
-  //       description: "Phong cách hiện đại, phù hợp cả nam và nữ.",
-  //       brandName: "Zoro",
-  //     },
-  //     {
-  //       id: "4",
-  //       name: "Kính thời trang",
-  //       imageCover: "/glasses/1.png",
-  //       price: 750000,
-  //       description: "Phong cách hiện đại, phù hợp cả nam và nữ.",
-  //       brandName: "Zoro",
-  //     },
-  //     {
-  //       id: "4",
-  //       name: "Kính thời trang",
-  //       imageCover: "/public/glasses/2.png",
-  //       price: 750000,
-  //       description: "Phong cách hiện đại, phù hợp cả nam và nữ.",
-  //       brandName: "Zoro",
-  //     },
-  //   ],
-  //   metaData: {
-  //     pageNumber: 1,
-  //     pageSize: 10,
-  //     totalElement: 2,
-  //     totalPage: 1,
-  //   },
-  // };
+  const fake = {
+    message: "Danh sách product",
+    httpCode: 200,
+    data: [
+      {
+        id: "1",
+        name: "Kính cận",
+        imageCover: "/glasses/1.png",
+        price: 500000,
+        description: "Kính gọng nhựa cao cấp, nhẹ và bền.",
+        brandName: "Anna",
+      },
+      {
+        id: "2",
+        name: "Kính thời trang",
+        imageCover: "/glasses/2.png",
+        price: 750000,
+        description: "Phong cách hiện đại, phù hợp cả nam và nữ.",
+        brandName: "Zoro",
+      },
+      {
+        id: "3",
+        name: "Kính thời trang",
+        imageCover: "/glasses/2.png",
+        price: 750000,
+        description: "Phong cách hiện đại, phù hợp cả nam và nữ.",
+        brandName: "Zoro",
+      },
+      {
+        id: "4",
+        name: "Kính thời trang",
+        imageCover: "/glasses/1.png",
+        price: 750000,
+        description: "Phong cách hiện đại, phù hợp cả nam và nữ.",
+        brandName: "Zoro",
+      },
+      {
+        id: "4",
+        name: "Kính thời trang",
+        imageCover: "/glasses/2.png",
+        price: 750000,
+        description: "Phong cách hiện đại, phù hợp cả nam và nữ.",
+        brandName: "Zoro",
+      },
+      {
+        id: "4",
+        name: "Kính thời trang",
+        imageCover: "/glasses/1.png",
+        price: 750000,
+        description: "Phong cách hiện đại, phù hợp cả nam và nữ.",
+        brandName: "Zoro",
+      },
+      {
+        id: "4",
+        name: "Kính thời trang",
+        imageCover: "/public/glasses/2.png",
+        price: 750000,
+        description: "Phong cách hiện đại, phù hợp cả nam và nữ.",
+        brandName: "Zoro",
+      },
+    ],
+    metaData: {
+      pageNumber: 1,
+      pageSize: 10,
+      totalElement: 2,
+      totalPage: 1,
+    },
+  };
   const [filters, setFilters] = useState({
     keyword: "",
     colors: [],
@@ -79,20 +79,20 @@ export default function ProductList() {
     pageNumber: 1,
     pageSize: 10,
   });
-  const [products, setProducts] = useState();
+  const [products, setProducts] = useState(fake.data);
   const navigate = useNavigate();
   const [totalItems, setTotalItems] = useState(0);
 
-  useEffect(() => {
-    fetchProducts(filters)
-      .then((res) => {
-        setProducts(res.items);
-        setTotalItems(res.total);
-      })
-      .catch((err) => {
-        console.error("Lỗi khi fetch sản phẩm:", err);
-      });
-  }, [filters]);
+  // useEffect(() => {
+  //   fetchProducts(filters)
+  //     .then((res) => {
+  //       setProducts(res.items);
+  //       setTotalItems(res.total);
+  //     })
+  //     .catch((err) => {
+  //       console.error("Lỗi khi fetch sản phẩm:", err);
+  //     });
+  // }, [filters]);
   const handleFilterChange = (newFilters) => {
     setFilters({ ...filters, ...newFilters, pageNumber: 1 });
   };

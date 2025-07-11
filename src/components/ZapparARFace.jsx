@@ -61,7 +61,7 @@ export default function ZapparFaceTracking({ modelUrl }) {
           faceTrackerGroup.add(model);
         },
         undefined,
-        (error) => console.error("❌ Failed to load GLTF model:", error)
+        (error) => console.error(" Failed to load GLTF model:", error)
       );
     }
 
@@ -80,7 +80,7 @@ export default function ZapparFaceTracking({ modelUrl }) {
       else ZapparThree.permissionDeniedUI();
     });
 
-    // Hiện/ẩn faceTrackerGroup dựa trên trạng thái face visible
+    // Hiện/ẩn faceTrackerGroup dựa trên trạng thái face visible (có tracking được mặt )
     faceTracker.onVisible.bind(() => {
       faceTrackerGroup.visible = true;
     });
